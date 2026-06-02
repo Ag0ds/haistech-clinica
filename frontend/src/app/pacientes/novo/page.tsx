@@ -30,9 +30,8 @@ export default function NovoPaciente() {
       await api.createPaciente(data);
       alert("Paciente cadastrado com sucesso!");
       router.push("/");
-    } catch (err) {
-      alert("Erro ao cadastrar paciente.");
-      console.error(err);
+    } catch (err: any) {
+      alert(`Ocorreram os seguintes erros:\n${err.message || "Erro desconhecido ao cadastrar."}`);
     } finally {
       setLoading(false);
     }

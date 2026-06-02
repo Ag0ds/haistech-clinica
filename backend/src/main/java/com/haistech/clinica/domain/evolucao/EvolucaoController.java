@@ -33,7 +33,7 @@ public class EvolucaoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Evolucao> atualizar(@PathVariable Long id, @RequestBody DadosAtualizacaoEvolucaoDTO dados) {
+    public ResponseEntity<Evolucao> atualizar(@PathVariable Long id, @RequestBody @Valid DadosAtualizacaoEvolucaoDTO dados) {
         Evolucao evolucaoAtualizada = service.atualizarEvolucao(id, dados);
         return ResponseEntity.ok(evolucaoAtualizada);
     }

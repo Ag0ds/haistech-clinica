@@ -40,9 +40,8 @@ export default function EditarPaciente() {
       await api.updatePaciente(pacienteId, data);
       alert("Paciente atualizado com sucesso!");
       router.push(`/pacientes/${pacienteId}`);
-    } catch (err) {
-      alert("Erro ao atualizar paciente.");
-      console.error(err);
+    } catch (err: any) {
+      alert(`Ocorreram os seguintes erros:\n${err.message || "Erro desconhecido ao atualizar."}`);
     } finally {
       setLoading(false);
     }

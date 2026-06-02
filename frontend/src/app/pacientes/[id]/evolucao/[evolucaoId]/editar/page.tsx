@@ -44,9 +44,8 @@ export default function EditarEvolucao() {
       await api.updateEvolucao(evolucaoId, data);
       alert("Evolução atualizada com sucesso!");
       router.push(`/pacientes/${pacienteId}`);
-    } catch (err) {
-      alert("Erro ao atualizar evolução.");
-      console.error(err);
+    } catch (err: any) {
+      alert(`Ocorreram os seguintes erros:\n${err.message || "Erro desconhecido ao atualizar."}`);
     } finally {
       setLoading(false);
     }

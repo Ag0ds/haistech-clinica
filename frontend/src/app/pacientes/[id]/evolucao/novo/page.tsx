@@ -29,9 +29,8 @@ export default function NovaEvolucao() {
       await api.createEvolucao(pacienteId, data);
       alert("Evolução salva e enviada para a fila RabbitMQ!");
       router.push(`/pacientes/${pacienteId}`);
-    } catch (err) {
-      alert("Erro ao salvar evolução.");
-      console.error(err);
+    } catch (err: any) {
+      alert(`Ocorreram os seguintes erros:\n${err.message || "Erro desconhecido ao registrar evolução."}`);
     } finally {
       setLoading(false);
     }
