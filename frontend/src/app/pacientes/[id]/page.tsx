@@ -75,20 +75,37 @@ export default function ProntuarioPaciente() {
         </div>
 
         <div className="space-y-4 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-slate-200 before:to-transparent">
-          {evolucoes.map((evolucao, index) => (
+          {evolucoes.map((evolucao) => (
             <div key={evolucao.id} className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
               <div className="flex items-center justify-center w-10 h-10 rounded-full border-4 border-white bg-primary text-white shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
                 📄
               </div>
-              <Card className="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] hover:shadow-lg transition-shadow duration-300">
+              <Card className="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] hover:shadow-lg transition-shadow duration-300 relative">
                 <div className="flex justify-between items-start mb-2">
-                  <span className="font-bold text-sky-700">{new Date(evolucao.dataEvolucao).toLocaleDateString('pt-BR')}</span>
+                  <span className="font-bold text-sky-700">{new Date(evolucao.dataRegistro).toLocaleDateString('pt-BR')}</span>
                   <div className="flex gap-3 text-xs text-slate-500 font-medium">
-                    <span className="bg-slate-100 px-2 py-1 rounded-md">PA: {evolucao.pressaoArterial}</span>
-                    <span className="bg-slate-100 px-2 py-1 rounded-md">{evolucao.peso} kg</span>
+                    {evolucao.pressaoArterial && <span className="bg-slate-100 px-2 py-1 rounded-md">PA: {evolucao.pressaoArterial}</span>}
+                    {evolucao.peso && <span className="bg-slate-100 px-2 py-1 rounded-md">{evolucao.peso} kg</span>}
                   </div>
                 </div>
-                <p className="text-slate-600 text-sm leading-relaxed">{evolucao.descricao}</p>
+                <p className="text-slate-600 text-sm leading-relaxed mb-4">{evolucao.descricao}</p>
+                <div className="flex justify-end gap-2 mt-2 pt-2 border-t border-slate-100">
+                  <Link href={`/pacientes/${pacienteId}/evolucao/${evolucao.id}/editar`}>
+                    <Button variant="ghost" size="sm" className="text-xs text-slate-500 hover:text-sky-600 px-2 h-7">Editar</Button>
+                  </Link>
+                  <Button variant="ghost" size="sm" className="text-xs text-slate-500 hover:text-red-600 px-2 h-7" onClick={async () => {
+                    if (confirm('Tem certeza que deseja excluir esta evolução?')) {
+                      try {
+                        await api.deleteEvolucao(evolucao.id);
+                        setEvolucoes(evolucoes.filter(e => e.id !== evolucao.id));
+                      } catch (e) {
+                        alert('Erro ao excluir evolução.');
+                      }
+                    }
+                  }}>
+                    Excluir
+                  </Button>
+                </div>
               </Card>
             </div>
           ))}

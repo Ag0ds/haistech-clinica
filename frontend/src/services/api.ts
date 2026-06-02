@@ -49,5 +49,22 @@ export const api = {
     });
     if (!res.ok) throw new Error('Falha ao registrar evolução');
     return res.json();
+  },
+
+  async updateEvolucao(evolucaoId: string, data: any) {
+    const res = await fetch(`${API_BASE_URL}/evolucoes/${evolucaoId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+    if (!res.ok) throw new Error('Falha ao atualizar evolução');
+    return res.json();
+  },
+
+  async deleteEvolucao(evolucaoId: string) {
+    const res = await fetch(`${API_BASE_URL}/evolucoes/${evolucaoId}`, {
+      method: 'DELETE',
+    });
+    if (!res.ok) throw new Error('Falha ao excluir evolução');
   }
 };

@@ -7,6 +7,9 @@ public record DadosCadastroEvolucaoDTO(
         @NotNull
         Long pacienteId,
         
+        String pressaoArterial,
+        Double peso,
+
         @NotBlank
         String descricao
 ) {

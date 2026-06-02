@@ -28,15 +28,32 @@ public class Evolucao {
     @JoinColumn(name = "paciente_id")
     private Paciente paciente;
 
+    private String pressaoArterial;
+    private Double peso;
+
     @NotBlank
     private String descricao;
 
     @NotNull
     private LocalDateTime dataRegistro;
 
-    public Evolucao(Paciente paciente, String descricao) {
+    public Evolucao(DadosCadastroEvolucaoDTO dados, Paciente paciente) {
         this.paciente = paciente;
-        this.descricao = descricao;
+        this.pressaoArterial = dados.pressaoArterial();
+        this.peso = dados.peso();
+        this.descricao = dados.descricao();
         this.dataRegistro = LocalDateTime.now(); // Pega a data e hora exata do servidor no momento do registro
+    }
+
+    public void atualizarInformacoes(DadosAtualizacaoEvolucaoDTO dados) {
+        if (dados.pressaoArterial() != null) {
+            this.pressaoArterial = dados.pressaoArterial();
+        }
+        if (dados.peso() != null) {
+            this.peso = dados.peso();
+        }
+        if (dados.descricao() != null) {
+            this.descricao = dados.descricao();
+        }
     }
 }

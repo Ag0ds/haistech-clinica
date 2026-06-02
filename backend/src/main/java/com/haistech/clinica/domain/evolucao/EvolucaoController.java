@@ -31,4 +31,16 @@ public class EvolucaoController {
     public ResponseEntity<List<Evolucao>> listarHistorico(@PathVariable Long pacienteId) {
         return ResponseEntity.ok(service.listarHistoricoDoPaciente(pacienteId));
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Evolucao> atualizar(@PathVariable Long id, @RequestBody DadosAtualizacaoEvolucaoDTO dados) {
+        Evolucao evolucaoAtualizada = service.atualizarEvolucao(id, dados);
+        return ResponseEntity.ok(evolucaoAtualizada);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> excluir(@PathVariable Long id) {
+        service.excluirEvolucao(id);
+        return ResponseEntity.noContent().build();
+    }
 }

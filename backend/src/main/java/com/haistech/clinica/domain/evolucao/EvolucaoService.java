@@ -29,7 +29,7 @@ public class EvolucaoService {
                 .orElseThrow(() -> new IllegalArgumentException("Paciente não encontrado para registrar evolução."));
 
         // Cria a evolução
-        Evolucao novaEvolucao = new Evolucao(paciente, dados.descricao());
+        Evolucao novaEvolucao = new Evolucao(dados, paciente);
         Evolucao evolucaoSalva = evolucaoRepository.save(novaEvolucao);
 
         // Comunicação Assíncrona: Envia uma mensagem para a fila avisando que houve uma nova evolução!
@@ -37,6 +37,23 @@ public class EvolucaoService {
         rabbitTemplate.convertAndSend(RabbitMQConfig.FILA_NOTIFICACOES, mensagemNotificacao);
 
         return evolucaoSalva;
+    }
+
+    @Transactional
+    public Evolucao atualizarEvolucao(Long id, DadosAtualizacaoEvolucaoDTO dados) {
+        Evolucao evolucao = evolucaoRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Evolução não encontrada."));
+        
+        evolucao.atualizarInformacoes(dados);
+        return evolucao;
+    }
+
+    @Transactional
+    public void excluirEvolucao(Long id) {
+        if (!evolucaoRepository.existsById(id)) {
+            throw new IllegalArgumentException("Evolução não encontrada.");
+        }
+        evolucaoRepository.deleteById(id);
     }
 
     public List<Evolucao> listarHistoricoDoPaciente(Long pacienteId) {
