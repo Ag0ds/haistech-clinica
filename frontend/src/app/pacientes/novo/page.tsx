@@ -23,7 +23,7 @@ export default function NovoPaciente() {
       cpf: formData.get("cpf"),
       dataNascimento: formData.get("dataNascimento"),
       telefone: formData.get("telefone"),
-      endereco: formData.get("endereco")
+      email: formData.get("email")
     };
 
     try {
@@ -62,8 +62,8 @@ export default function NovoPaciente() {
               <Input label="Data de Nascimento" name="dataNascimento" type="date" required />
             </div>
 
-            <Input label="Telefone" name="telefone" placeholder="(00) 00000-0000" />
-            <Input label="Endereço" name="endereco" placeholder="Rua, Número, Bairro, Cidade" />
+            <Input label="Telefone" name="telefone" placeholder="(00) 00000-0000" required />
+            <Input label="E-mail" name="email" type="email" placeholder="email@exemplo.com" required />
           </div>
 
           <div className="pt-4 flex justify-end gap-3 border-t border-slate-100">

@@ -33,7 +33,7 @@ export default function EditarPaciente() {
       nome: formData.get("nome"),
       dataNascimento: formData.get("dataNascimento"),
       telefone: formData.get("telefone"),
-      endereco: formData.get("endereco")
+      email: formData.get("email")
     };
 
     try {
@@ -80,8 +80,8 @@ export default function EditarPaciente() {
               <Input label="Data de Nascimento" name="dataNascimento" type="date" defaultValue={paciente.dataNascimento} required />
             </div>
 
-            <Input label="Telefone" name="telefone" defaultValue={paciente.telefone} />
-            <Input label="Endereço" name="endereco" defaultValue={paciente.endereco} />
+            <Input label="Telefone" name="telefone" defaultValue={paciente.telefone} required />
+            <Input label="E-mail" name="email" type="email" defaultValue={paciente.email} required />
           </div>
 
           <div className="pt-4 flex justify-end gap-3 border-t border-slate-100">
