@@ -1,13 +1,13 @@
 server:
-  port: 8080
+  port: ${PORT:8080}
 
 spring:
   application:
     name: clinica
   datasource:
-    url: jdbc:postgresql://localhost:5432/haistech
-    username: postgres
-    password: password
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/haistech}
+    username: ${SPRING_DATASOURCE_USERNAME:postgres}
+    password: ${SPRING_DATASOURCE_PASSWORD:password}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
@@ -17,7 +17,4 @@ spring:
       hibernate:
         format_sql: true
   rabbitmq:
-    host: localhost
-    port: 5672
-    username: guest
-    password: guest
+    addresses: ${SPRING_RABBITMQ_ADDRESSES:amqp://guest:guest@localhost:5672/}
