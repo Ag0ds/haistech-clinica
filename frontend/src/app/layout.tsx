@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { Header } from "@/components/layout/Header";
+import { LanguageProvider } from "@/contexts/LanguageContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -13,11 +15,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "HaisTech Clínica",
-  description: "Sistema de acompanhamento clínico",
+  title: "HAIS Tech | Clínica",
+  description: "Sistema de Prontuário Eletrônico Moderno",
 };
-
-import { Header } from "@/components/layout/Header";
 
 export default function RootLayout({
   children,
@@ -25,15 +25,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
-      <body className="min-h-full flex flex-col">
-        <Header />
-        <main className="flex-1 container mx-auto px-4 pb-12">
-          {children}
-        </main>
+    <html lang="pt-BR" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
+      <body className="min-h-full flex flex-col bg-background text-foreground">
+        <LanguageProvider>
+          <Header />
+          <main className="flex-1 container mx-auto px-4 pb-12 w-full max-w-7xl">
+            {children}
+          </main>
+        </LanguageProvider>
       </body>
     </html>
   );

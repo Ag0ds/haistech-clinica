@@ -1,15 +1,18 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f8fafc; /* slate-50 */
-  --foreground: #0f172a; /* slate-900 */
-  --primary: #0ea5e9; /* sky-500 */
+  --background: #0d1b2e; /* dark blue from image */
+  --foreground: #f1f5f9; /* slate-100 */
+  --primary: #5CA1FF; /* bright blue button */
   --primary-foreground: #ffffff;
-  --secondary: #e0f2fe; /* sky-100 */
-  --secondary-foreground: #0369a1; /* sky-700 */
-  --accent: #38bdf8; /* sky-400 */
-  --glass-bg: rgba(255, 255, 255, 0.7);
-  --glass-border: rgba(255, 255, 255, 0.4);
+  --secondary: #172a45; /* dark blue accent */
+  --secondary-foreground: #6b8cae; /* light blue grey */
+  --accent: #3b82f6; 
+  --card: #12223a; /* slightly lighter than background for cards */
+  --card-border: #23395b;
+  --input-bg: #091321;
+  --glass-bg: rgba(18, 34, 58, 0.7);
+  --glass-border: rgba(92, 161, 255, 0.1);
 }
 
 @theme inline {
@@ -20,7 +23,10 @@
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
   --color-accent: var(--accent);
-  --font-sans: 'Inter', var(--font-geist-sans), sans-serif;
+  --color-card: var(--card);
+  --color-card-border: var(--card-border);
+  --color-input-bg: var(--input-bg);
+  --font-sans: var(--font-geist-sans), sans-serif;
   --font-mono: var(--font-geist-mono), monospace;
 }
 
@@ -29,15 +35,7 @@
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--glass-border);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
-}
-
-@utility glass-dark {
-  background-color: rgba(15, 23, 42, 0.7);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
 }
 
 body {
@@ -45,7 +43,7 @@ body {
   color: var(--foreground);
   font-family: var(--font-sans);
   background-image: 
-    radial-gradient(at 0% 0%, hsla(199, 100%, 80%, 0.3) 0px, transparent 50%),
-    radial-gradient(at 100% 100%, hsla(213, 100%, 85%, 0.3) 0px, transparent 50%);
+    radial-gradient(circle at 100% 0%, rgba(92, 161, 255, 0.1) 0%, transparent 40%),
+    radial-gradient(circle at 0% 100%, rgba(59, 130, 246, 0.05) 0%, transparent 40%);
   background-attachment: fixed;
 }

@@ -4,28 +4,33 @@ import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import Link from "next/link";
-import { useRouter, useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { api } from "@/services/api";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function EditarEvolucao() {
   const router = useRouter();
   const params = useParams();
-  const pacienteId = params.id as string;
-  const evolucaoId = params.evolucaoId as string;
+  const pacienteId = params?.id as string;
+  const evolucaoId = params?.evolucaoId as string;
+  const { t } = useLanguage();
 
   const [loading, setLoading] = useState(false);
   const [fetching, setFetching] = useState(true);
   const [evolucao, setEvolucao] = useState<any>(null);
 
   useEffect(() => {
-    // Nós já temos todas as evoluções do paciente via getEvolucoes
+    if (!pacienteId || !evolucaoId) return;
+
     api.getEvolucoes(pacienteId)
       .then(evolucoes => {
         const evo = evolucoes.find((e: any) => e.id === Number(evolucaoId));
-        if (evo) setEvolucao(evo);
+        if (evo) {
+          setEvolucao(evo);
+        }
       })
-      .catch(err => console.error(err))
+      .catch(err => console.error("Erro ao carregar evolução", err))
       .finally(() => setFetching(false));
   }, [pacienteId, evolucaoId]);
 
@@ -42,60 +47,62 @@ export default function EditarEvolucao() {
 
     try {
       await api.updateEvolucao(evolucaoId, data);
-      alert("Evolução atualizada com sucesso!");
+      alert(t('alert.successEvoUpdate'));
       router.push(`/pacientes/${pacienteId}`);
     } catch (err: any) {
-      alert(`Ocorreram os seguintes erros:\n${err.message || "Erro desconhecido ao atualizar."}`);
+      alert(`${t('alert.errorPrefix')}\n${err.message || t('alert.unknownUpdate')}`);
     } finally {
       setLoading(false);
     }
   };
 
-  if (fetching) return <div className="text-center p-12 text-slate-500">Carregando dados...</div>;
-  if (!evolucao) return <div className="text-center p-12 text-slate-500">Evolução não encontrada.</div>;
+  if (fetching) {
+    return <div className="text-center p-12 text-slate-500">{t('loading.data')}</div>;
+  }
+
+  if (!evolucao) {
+    return <div className="text-center p-12 text-slate-500">{t('loading.evoNotFound')}</div>;
+  }
 
   return (
     <div className="max-w-2xl mx-auto space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
       <div className="flex items-center gap-4">
         <Link href={`/pacientes/${pacienteId}`}>
-          <Button variant="ghost" size="sm" className="text-slate-500">
-            &larr; Voltar ao Prontuário
+          <Button variant="ghost" size="sm" className="text-[var(--secondary-foreground)] hover:text-white">
+            &larr; {t('evolution.back')}
           </Button>
         </Link>
         <div>
-          <h2 className="text-2xl font-bold text-slate-800 tracking-tight">Editar Evolução Clínica</h2>
-          <p className="text-sm text-slate-500">Atualize os dados desta consulta.</p>
+          <h2 className="text-2xl font-bold text-white uppercase font-mono tracking-tight">{t('evolution.editTitle')}</h2>
+          <p className="text-sm text-[var(--secondary-foreground)] font-mono tracking-widest mt-1">{t('evolution.editSubtitle')}</p>
         </div>
       </div>
 
-      <Card>
+      <Card className="bg-[var(--card)] border border-[var(--card-border)]" glass={false}>
         <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <Input label="Pressão Arterial" name="pressaoArterial" defaultValue={evolucao.pressaoArterial} placeholder="Ex: 120/80" required />
-              <Input label="Peso (kg)" name="peso" defaultValue={evolucao.peso} type="number" step="0.1" placeholder="Ex: 75.5" required />
-            </div>
-
-            <div className="flex flex-col gap-1 w-full">
-              <label className="text-sm font-medium text-slate-700 ml-1">
-                Descrição / Diagnóstico
-              </label>
-              <textarea
-                name="descricao"
-                defaultValue={evolucao.descricao}
-                className="px-4 py-2 rounded-lg border border-slate-200 bg-white/50 focus:bg-white transition-colors outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary min-h-[120px] resize-y"
-                placeholder="Detalhe o estado clínico do paciente..."
-                required
-              />
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Input label={t('evolution.bp')} name="pressaoArterial" defaultValue={evolucao.pressaoArterial} placeholder="Ex: 120/80" />
+            <Input label={t('evolution.weight')} name="peso" type="number" step="0.01" defaultValue={evolucao.peso} placeholder="Ex: 75.5" />
           </div>
 
-          <div className="pt-4 flex justify-end gap-3 border-t border-slate-100">
+          <div className="space-y-2">
+            <label className="text-[10px] font-semibold text-[var(--secondary-foreground)] uppercase tracking-widest font-mono">{t('evolution.description')} *</label>
+            <textarea 
+              name="descricao"
+              rows={6} 
+              defaultValue={evolucao.descricao}
+              className="w-full bg-[var(--input-bg)] border border-[var(--card-border)] rounded-lg p-3 text-white focus:outline-none focus:ring-1 focus:ring-[var(--primary)] transition-all resize-none text-sm leading-relaxed"
+              placeholder={t('evolution.descPlaceholder')}
+              required
+            ></textarea>
+          </div>
+
+          <div className="pt-4 flex justify-end gap-3 border-t border-[var(--card-border)]">
             <Link href={`/pacientes/${pacienteId}`}>
-              <Button type="button" variant="ghost">Cancelar</Button>
+              <Button type="button" variant="ghost" className="font-mono text-xs tracking-widest uppercase">{t('evolution.cancel')}</Button>
             </Link>
-            <Button type="submit" disabled={loading}>
-              {loading ? "Atualizando..." : "Atualizar Evolução"}
+            <Button type="submit" disabled={loading} className="font-mono text-xs tracking-widest uppercase">
+              {loading ? t('evolution.updating') : t('evolution.update')}
             </Button>
           </div>
         </form>

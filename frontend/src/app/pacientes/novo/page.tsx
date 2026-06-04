@@ -7,9 +7,11 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { api } from "@/services/api";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function NovoPaciente() {
   const router = useRouter();
+  const { t } = useLanguage();
   const [loading, setLoading] = useState(false);
 
   // Função para salvar no backend
@@ -28,10 +30,10 @@ export default function NovoPaciente() {
 
     try {
       await api.createPaciente(data);
-      alert("Paciente cadastrado com sucesso!");
+      alert(t('alert.successCreate'));
       router.push("/");
     } catch (err: any) {
-      alert(`Ocorreram os seguintes erros:\n${err.message || "Erro desconhecido ao cadastrar."}`);
+      alert(`${t('alert.errorPrefix')}\n${err.message || t('alert.unknownCreate')}`);
     } finally {
       setLoading(false);
     }
@@ -41,36 +43,36 @@ export default function NovoPaciente() {
     <div className="max-w-2xl mx-auto space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
       <div className="flex items-center gap-4">
         <Link href="/">
-          <Button variant="ghost" size="sm" className="text-slate-500">
-            &larr; Voltar
+          <Button variant="ghost" size="sm" className="text-[var(--secondary-foreground)] hover:text-white">
+            &larr; {t('patient.back')}
           </Button>
         </Link>
         <div>
-          <h2 className="text-2xl font-bold text-slate-800 tracking-tight">Novo Paciente</h2>
-          <p className="text-sm text-slate-500">Preencha os dados básicos do paciente.</p>
+          <h2 className="text-2xl font-bold text-white uppercase font-mono tracking-tight">{t('patient.newTitle')}</h2>
+          <p className="text-sm text-[var(--secondary-foreground)] font-mono tracking-widest mt-1">{t('patient.newSubtitle')}</p>
         </div>
       </div>
 
-      <Card>
+      <Card className="bg-[var(--card)] border border-[var(--card-border)]" glass={false}>
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-4">
-            <Input label="Nome Completo" name="nome" placeholder="Ex: João da Silva" required />
+            <Input label={t('patient.fullName')} name="nome" placeholder="Ex: João da Silva" required />
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <Input label="CPF" name="cpf" placeholder="000.000.000-00" required />
-              <Input label="Data de Nascimento" name="dataNascimento" type="date" required />
+              <Input label={t('home.cpf')} name="cpf" placeholder="000.000.000-00" required />
+              <Input label={t('patient.dob')} name="dataNascimento" type="date" required />
             </div>
 
-            <Input label="Telefone" name="telefone" placeholder="(00) 00000-0000" required />
-            <Input label="E-mail" name="email" type="email" placeholder="email@exemplo.com" required />
+            <Input label={t('home.phone')} name="telefone" placeholder="(00) 00000-0000" required />
+            <Input label={t('patient.email')} name="email" type="email" placeholder="email@exemplo.com" required />
           </div>
 
-          <div className="pt-4 flex justify-end gap-3 border-t border-slate-100">
+          <div className="pt-4 flex justify-end gap-3 border-t border-[var(--card-border)]">
             <Link href="/">
-              <Button type="button" variant="ghost">Cancelar</Button>
+              <Button type="button" variant="ghost" className="font-mono text-xs tracking-widest uppercase">{t('patient.cancel')}</Button>
             </Link>
-            <Button type="submit" disabled={loading}>
-              {loading ? "Salvando..." : "Salvar Paciente"}
+            <Button type="submit" disabled={loading} className="font-mono text-xs tracking-widest uppercase">
+              {loading ? t('patient.saving') : t('patient.save')}
             </Button>
           </div>
         </form>
