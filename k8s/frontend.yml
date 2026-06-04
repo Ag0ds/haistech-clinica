@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+      - name: frontend
+        image: haistech/frontend:latest
+        imagePullPolicy: Never # Usa imagem local no minikube
+        ports:
+        - containerPort: 3000
+        env:
+        # A API_URL para o frontend bater, vamos usar localhost no Node se SSR, ou ClusterIP.
+        # Como o fetch é no browser, precisamos expor o backend via Ingress ou Service NodePort.
+        # Por simplicidade local, vamos assumir que o backend está acessível em localhost:8080
+        - name: NEXT_PUBLIC_API_URL
+          value: http://localhost:8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 3000
+    targetPort: 3000
+    nodePort: 30000
+  selector:
+    app: frontend
