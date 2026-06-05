@@ -8,6 +8,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { api } from "@/services/api";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { maskTelefone } from "@/utils/masks";
 
 export default function EditarPaciente() {
   const router = useRouter();
@@ -83,7 +84,13 @@ export default function EditarPaciente() {
               <Input label={t('patient.dob')} name="dataNascimento" type="date" defaultValue={paciente.dataNascimento} disabled className="opacity-70 cursor-not-allowed" title="Data de nascimento não pode ser alterada" />
             </div>
 
-            <Input label={t('home.phone')} name="telefone" defaultValue={paciente.telefone} required />
+            <Input 
+              label={t('home.phone')} 
+              name="telefone" 
+              defaultValue={paciente.telefone} 
+              onChange={(e) => { e.target.value = maskTelefone(e.target.value); }}
+              required 
+            />
             <Input label={t('patient.email')} name="email" type="email" defaultValue={paciente.email} required />
           </div>
 

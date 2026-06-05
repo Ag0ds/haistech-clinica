@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { api } from "@/services/api";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { maskCPF, maskTelefone } from "@/utils/masks";
 
 export default function NovoPaciente() {
   const router = useRouter();
@@ -59,11 +60,23 @@ export default function NovoPaciente() {
             <Input label={t('patient.fullName')} name="nome" placeholder="Ex: João da Silva" required />
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <Input label={t('home.cpf')} name="cpf" placeholder="000.000.000-00" required />
+              <Input 
+                label={t('home.cpf')} 
+                name="cpf" 
+                placeholder="000.000.000-00" 
+                onChange={(e) => { e.target.value = maskCPF(e.target.value); }}
+                required 
+              />
               <Input label={t('patient.dob')} name="dataNascimento" type="date" required />
             </div>
 
-            <Input label={t('home.phone')} name="telefone" placeholder="(00) 00000-0000" required />
+            <Input 
+              label={t('home.phone')} 
+              name="telefone" 
+              placeholder="(00) 00000-0000" 
+              onChange={(e) => { e.target.value = maskTelefone(e.target.value); }}
+              required 
+            />
             <Input label={t('patient.email')} name="email" type="email" placeholder="email@exemplo.com" required />
           </div>
 
