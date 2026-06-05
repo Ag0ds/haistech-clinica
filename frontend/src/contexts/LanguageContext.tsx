@@ -74,11 +74,17 @@ const translations = {
     "evolution.description": "Descrição / Diagnóstico",
     "evolution.descPlaceholder": "Detalhe o estado clínico do paciente...",
     "evolution.save": "Registrar Evolução",
-    "evolution.saving": "Registrando...",
+    "evolution.saving": "Salvando...",
     "evolution.update": "Atualizar Evolução",
     "evolution.updating": "Atualizando...",
     "evolution.cancel": "Cancelar",
     "evolution.back": "Voltar ao Prontuário",
+
+    // AI Assistant
+    "ai.title": "Assistente IA HAIS Tech ✨",
+    "ai.subtitle": "Análise de Histórico Clínico",
+    "ai.generate": "Gerar Análise Clínica com IA",
+    "ai.processing": "A Inteligência Artificial está analisando o paciente...",
     
     // Alerts
     "alert.errorPrefix": "Ocorreram os seguintes erros:",
@@ -165,6 +171,12 @@ const translations = {
     "evolution.updating": "Updating...",
     "evolution.cancel": "Cancel",
     "evolution.back": "Back to Record",
+    
+    // AI Assistant
+    "ai.title": "HAIS Tech AI Assistant ✨",
+    "ai.subtitle": "Clinical History Analysis",
+    "ai.generate": "Generate AI Clinical Analysis",
+    "ai.processing": "Artificial Intelligence is analyzing the patient...",
     
     // Alerts
     "alert.errorPrefix": "The following errors occurred:",

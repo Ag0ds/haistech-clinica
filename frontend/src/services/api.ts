@@ -86,5 +86,12 @@ export const api = {
       method: 'DELETE',
     });
     if (!res.ok) await this.handleResponseError(res, 'Falha ao excluir evolução');
+  },
+
+  // --- IA Assistant ---
+  async getAnaliseIa(pacienteId: string) {
+    const res = await fetch(`${API_BASE_URL}/pacientes/${pacienteId}/ia-analise`, { cache: 'no-store' });
+    if (!res.ok) await this.handleResponseError(res, 'Falha ao processar análise clínica com a IA');
+    return res.json();
   }
 };

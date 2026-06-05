@@ -17,6 +17,22 @@ export default function DetalhesPaciente() {
   const [paciente, setPaciente] = useState<any>(null);
   const [evolucoes, setEvolucoes] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  
+  const [iaResponse, setIaResponse] = useState<string | null>(null);
+  const [iaLoading, setIaLoading] = useState(false);
+
+  const handleGenerateIaAnalysis = async () => {
+    setIaLoading(true);
+    setIaResponse(null);
+    try {
+      const data = await api.getAnaliseIa(pacienteId);
+      setIaResponse(data.analise);
+    } catch (e: any) {
+      alert(`${t('alert.errorPrefix')} ${e.message}`);
+    } finally {
+      setIaLoading(false);
+    }
+  };
 
   const handleDeleteEvolucao = async (id: string) => {
     if (confirm(t('alert.deleteConfirm'))) {
@@ -84,6 +100,38 @@ export default function DetalhesPaciente() {
             <p><strong className="font-semibold text-white">Contato:</strong> {paciente.telefone}</p>
           </div>
         </div>
+      </Card>
+
+      {/* HAIS Tech AI Assistant Card */}
+      <Card className="bg-[var(--card)] border border-[var(--primary)]/50 relative overflow-hidden" glass={false}>
+        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[var(--primary)] to-transparent opacity-50"></div>
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
+          <div>
+            <h3 className="text-xl font-bold text-[var(--primary)] uppercase font-mono tracking-tight flex items-center gap-2">
+              <span className="animate-pulse">✨</span> {t('ai.title')}
+            </h3>
+            <p className="text-xs text-[var(--secondary-foreground)] font-mono tracking-widest mt-1">{t('ai.subtitle')}</p>
+          </div>
+          <Button 
+            onClick={handleGenerateIaAnalysis} 
+            disabled={iaLoading || evolucoes.length === 0}
+            className="font-mono text-xs tracking-widest uppercase bg-[var(--primary)]/20 text-[var(--primary)] hover:bg-[var(--primary)] hover:text-white border border-[var(--primary)]/50 transition-all duration-300"
+          >
+            {iaLoading ? t('ai.processing') : t('ai.generate')}
+          </Button>
+        </div>
+        
+        {iaLoading && (
+          <div className="p-8 border border-dashed border-[var(--primary)]/30 rounded-md bg-[var(--primary)]/5 flex items-center justify-center">
+            <span className="font-mono text-xs text-[var(--primary)] animate-pulse tracking-widest uppercase">Analisando histórico de evoluções...</span>
+          </div>
+        )}
+
+        {iaResponse && !iaLoading && (
+          <div className="p-6 border border-solid border-[var(--primary)]/20 rounded-md bg-black/40 text-[var(--foreground)] text-sm leading-relaxed font-sans">
+            <div dangerouslySetInnerHTML={{ __html: iaResponse.replace(/\n/g, '<br/>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/### (.*?)(<br\/>|$)/g, '<h4 class="text-[var(--primary)] font-bold mt-4 mb-2 text-base">$1</h4>') }} />
+          </div>
+        )}
       </Card>
 
       <div className="space-y-4">

@@ -14,7 +14,7 @@ public class EvolucaoService {
 
     private final EvolucaoRepository evolucaoRepository;
     private final PacienteRepository pacienteRepository;
-    private final RabbitTemplate rabbitTemplate; // O carteiro do RabbitMQ
+    private final RabbitTemplate rabbitTemplate;
 
     public EvolucaoService(EvolucaoRepository evolucaoRepository, PacienteRepository pacienteRepository, RabbitTemplate rabbitTemplate) {
         this.evolucaoRepository = evolucaoRepository;

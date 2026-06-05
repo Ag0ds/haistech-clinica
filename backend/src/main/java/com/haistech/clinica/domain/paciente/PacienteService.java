@@ -10,7 +10,6 @@ public class PacienteService {
 
     private final PacienteRepository repository;
 
-    // A injeção de dependência via construtor é a mais recomendada pelo Spring
     public PacienteService(PacienteRepository repository) {
         this.repository = repository;
     }
@@ -25,7 +24,6 @@ public class PacienteService {
         // Convertemos o nosso "envelope" (DTO) para a "panela" (Entidade)
         Paciente novoPaciente = new Paciente(dados);
 
-        // Pedimos para o estoquista salvar no banco
         return repository.save(novoPaciente);
     }
 
@@ -40,14 +38,10 @@ public class PacienteService {
 
     @Transactional
     public Paciente atualizar(DadosAtualizacaoPacienteDTO dados) {
-        // Primeiro buscamos o paciente no banco
         Paciente paciente = buscarPorId(dados.id());
         
-        // Depois atualizamos apenas os dados permitidos
         paciente.atualizarInformacoes(dados);
         
-        // O JPA detecta a mudança automaticamente (pelo @Transactional) e faz o UPDATE,
-        // mas podemos chamar o save por garantia visual
         return repository.save(paciente);
     }
 }

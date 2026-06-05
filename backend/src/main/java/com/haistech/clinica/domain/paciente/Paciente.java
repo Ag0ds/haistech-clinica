@@ -38,7 +38,6 @@ public class Paciente {
     @NotBlank
     private String email;
 
-    // Construtor para criar a partir de um DTO (que faremos a seguir)
     public Paciente(DadosCadastroPacienteDTO dados) {
         this.nome = dados.nome();
         this.cpf = dados.cpf();
@@ -47,7 +46,6 @@ public class Paciente {
         this.email = dados.email();
     }
 
-    // Método para atualizar informações
     public void atualizarInformacoes(DadosAtualizacaoPacienteDTO dados) {
         if (dados.nome() != null) {
             this.nome = dados.nome();

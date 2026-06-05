@@ -18,3 +18,7 @@ spring:
         format_sql: true
   rabbitmq:
     addresses: ${SPRING_RABBITMQ_ADDRESSES:amqp://guest:guest@localhost:5672/}
+
+gemini:
+  api:
+    key: ${GEMINI_API_KEY:}

@@ -1,4 +1,4 @@
-# 🏗️ HAIS Tech - C4 Model Architecture
+# HAIS Tech - C4 Model Architecture
 
 This document describes the software architecture of the HAIS Tech Clinical platform using the [C4 Model](https://c4model.com/). Diagrams are generated using Mermaid.js.
 
